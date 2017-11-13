@@ -14,7 +14,13 @@ use com\verify\HonrayVerify;
 class Nurse extends Common
 {
 
-    protected $name = 'Nurse';
+    protected $name = 'nurse';
+    protected $createTime = 'create_time';
+    protected $updateTime = false;
+    protected $autoWriteTimestamp = true;
+    protected $insert = [
+        'status' => 1,
+    ];
     /**
      * 获取用户所属所有用户组
      * @param  array $param [description]
@@ -38,18 +44,23 @@ class Nurse extends Common
         $map = [];
         //根据keywords筛选用户信息
         if ($keywords) {
-            $map['nurse_id|nurse_name|nurse_tel'] = ['like', '%' . $keywords . '%'];
+            $map['user.name|user.tel'] = ['like', '%' . $keywords . '%'];
         }
 
         // 默认除去超级管理员
 //		$map['nurse.nurse_id'] = array('neq', 1);
 //        $map[] = array();
-        $dataCount = $this->alias('nurse')->where($map)->count('id');
+        $dataCount = $this
+            ->alias('nurse')
+            ->join('user user', 'user.user_id=nurse.user_id', 'LEFT')
+            ->where($map)
+            ->count('nurse.user_id');
 
         $list = $this
             ->where($map)
             ->alias('nurse')
-            ->join('department department', 'nurse.nurse_department=department.department_id', 'LEFT');
+            ->join('user user', 'user.user_id=nurse.user_id', 'LEFT')
+            ->join('department department', 'nurse.department=department.id', 'LEFT');
 
         // 若有分页
         if ($page && $limit) {
@@ -57,7 +68,7 @@ class Nurse extends Common
         }
 
         $list = $list
-            ->field('nurse.*,department.department_name as department_name')
+            ->field('nurse.*,user.name as name,user.tel as tel,department.name as department_name')
             ->select();
 
         $data['list'] = $list;
@@ -80,7 +91,6 @@ class Nurse extends Common
             $this->error = 'This data is not available';
             return false;
         }
-        $data['groups'] = $this->get($id)->groups;
         return $data;
     }
 
@@ -88,59 +98,59 @@ class Nurse extends Common
      * 创建用户
      * @param  array $param [description]
      */
-    public function createData($param)
-    {
-        if (empty($param['department_name'])) {
-            $this->error = 'Please check at least one department';
-            return false;
-        }
-
-        // 验证
-        $validate = validate($this->name);
-        if (!$validate->check($param)) {
-            $this->error = $validate->getError();
-            return false;
-        }
-
-        $this->startTrans();
-        try {
-            $param['nurse_password'] = user_md5($param['nurse_password']);
-            $this->data($param)->allowField(true)->save();
-
-//			foreach ($param['nurse'] as $k => $v) {
-//				$userGroup['user_id'] = $this->id;
-//				$userGroup['group_id'] = $v;
-//				$userGroups[] = $userGroup;
-//			}
-//			Db::name('admin_access')->insertAll($userGroups);
-
-            $this->commit();
-            return true;
-        } catch (\Exception $e) {
-            $this->rollback();
-            $this->error = 'Add failure';
-            return false;
-        }
-    }
+//    public function createData($param)
+//    {
+//        if (empty($param['department_name'])) {
+//            $this->error = 'Please check at least one department';
+//            return false;
+//        }
+//
+//        // 验证
+//        $validate = validate($this->name);
+//        if (!$validate->check($param)) {
+//            $this->error = $validate->getError();
+//            return false;
+//        }
+//
+//        $this->startTrans();
+//        try {
+//            $param['nurse_password'] = user_md5($param['nurse_password']);
+//            $this->data($param)->allowField(true)->save();
+//
+////			foreach ($param['nurse'] as $k => $v) {
+////				$userGroup['user_id'] = $this->id;
+////				$userGroup['group_id'] = $v;
+////				$userGroups[] = $userGroup;
+////			}
+////			Db::name('admin_access')->insertAll($userGroups);
+//
+//            $this->commit();
+//            return true;
+//        } catch (\Exception $e) {
+//            $this->rollback();
+//            $this->error = 'Add failure';
+//            return false;
+//        }
+//    }
 
     /**
      * 通过id修改用户
      * @param  array $param [description]
      */
-    public function updateDataById($param, $nurse_id)
+    public function updateDataById($param, $user_id)
     {
         // 不能操作超级管理员
-        if ($nurse_id == 1) {
+        if ($user_id == 1) {
             $this->error = 'Illegal operation';
             return false;
         }
-        $checkData = $this->get($nurse_id);
+        $checkData = $this->get($user_id);
         if (!$checkData) {
             $this->error = 'This data is not available';
             return false;
         }
-        if (empty($param['department_name'])) {
-            $this->error = 'Please tick at least one department';
+        if (empty($param['department'])) {
+            $this->error = 'Please check the department';
             return false;
         }
         $this->startTrans();
@@ -153,11 +163,9 @@ class Nurse extends Common
 //				$userGroups[] = $userGroup;
 //			}
 //			Db::name('admin_access')->insertAll($userGroups);
-
-            if (!empty($param['nurse_password'])) {
-                $param['nurse_password'] = user_md5($param['nurse_password']);
-            }
-            $this->allowField(true)->save($param, ['nurse_id' => $id]);
+//            Db::name('nurse')->insert($param, ['$user_id' => $user_id]);
+//            $this->allowField(['department','sex','age','title'])->save($param, ['$user_id' => $user_id]);
+            $this->allowField(true)->save($param, ['user_id' => $user_id]);
             $this->commit();
             return true;
 
@@ -167,4 +175,5 @@ class Nurse extends Common
             return false;
         }
     }
+
 }

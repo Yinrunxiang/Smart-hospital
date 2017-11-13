@@ -11,10 +11,10 @@ use think\Db;
 use app\admin\model\Common;
 use com\verify\HonrayVerify;
 
-class Medicine extends Common
+class Record extends Common
 {
 
-    protected $name = 'medicine';
+    protected $name = 'record';
 
 
     /**
@@ -31,17 +31,20 @@ class Medicine extends Common
         $map = [];
         //根据keywords筛选信息
         if ($keywords) {
-            $map['medicine.id|medicine.name'] = ['like', '%' . $keywords . '%'];
+            $map['record.id|patient.name|doctor.name'] = ['like', '%' . $keywords . '%'];
         }
-
-//		$map['doctor.doctor_id'] = array('neq', 1);
-//        $map[] = array();
         $dataCount = $this
             ->where($map)
-            ->count('medicine.id');
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->count('patient.id');
 
         $list = $this
-            ->where($map);
+            ->where($map)
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT');
 
         // 若有分页
         if ($page && $limit) {
@@ -49,7 +52,7 @@ class Medicine extends Common
         }
 
         $list = $list
-            ->field('medicine.*')
+            ->field('record.*,patient.name as patient_name,doctor.name as doctor_name')
             ->select();
 
         $data['list'] = $list;
@@ -59,17 +62,6 @@ class Medicine extends Common
     }
     public function createData($param)
     {
-        if (empty($param['type'])) {
-
-            $this->error = 'Please check the medicine type';
-            return false;
-        }
-        $map['name'] = $param['name'];
-        $dept = $this->where($map)->find();
-        if ($dept) {
-            $this->error = 'The Medicine has been in existence';
-            return false;
-        }
         // 验证
         $validate = validate($this->name);
         if (!$validate->check($param)) {

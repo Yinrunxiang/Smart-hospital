@@ -60,7 +60,7 @@ class Doctor extends Common
             ->where($map)
             ->alias('doctor')
             ->join('user user', 'user.user_id=doctor.user_id', 'LEFT')
-            ->join('department department', 'doctor.department=department.department', 'LEFT');
+            ->join('department department', 'doctor.department=department.id', 'LEFT');
 
         // 若有分页
         if ($page && $limit) {

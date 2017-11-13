@@ -8,9 +8,13 @@
 return [
     // 定义资源路由
     '__rest__'=>[
-        'admin/doctor'		   =>'admin/doctor',
         'admin/department'		   =>'admin/department',
+        'admin/medicine'		   =>'admin/medicine',
+        'admin/record'		   =>'admin/record',
         'admin/user'		   =>'admin/user',
+        'admin/doctor'		   =>'admin/doctor',
+        'admin/nurse'		   =>'admin/nurse',
+        'admin/patient'		   =>'admin/patient',
         'admin/rules'		   =>'admin/rules',
         'admin/groups'		   =>'admin/groups',
         'admin/users'		   =>'admin/users',
@@ -35,30 +39,26 @@ return [
 	'admin/upload' => ['admin/upload/index', ['method' => 'POST']],
 	// 保存系统配置
 	'admin/systemConfigs' => ['admin/systemConfigs/save', ['method' => 'POST']],
-	// 【规则】批量删除
-	'admin/rules/deletes' => ['admin/rules/deletes', ['method' => 'POST']],
-	// 【规则】批量启用/禁用
-	'admin/rules/enables' => ['admin/rules/enables', ['method' => 'POST']],
-	// 【用户组】批量删除
-	'admin/groups/deletes' => ['admin/groups/deletes', ['method' => 'POST']],
-	// 【用户组】批量启用/禁用
-	'admin/groups/enables' => ['admin/groups/enables', ['method' => 'POST']],
+    // 【部门】批量删除
+    'admin/department/deletes' => ['admin/department/deletes', ['method' => 'POST']],
+    // 【部门】批量启用/禁用
+    'admin/department/enables' => ['admin/department/enables', ['method' => 'POST']],
 	// 【用户】批量删除
-	'admin/users/deletes' => ['admin/users/deletes', ['method' => 'POST']],
+	'admin/user/deletes' => ['admin/users/deletes', ['method' => 'POST']],
 	// 【用户】批量启用/禁用
-	'admin/users/enables' => ['admin/users/enables', ['method' => 'POST']],
-	// 【菜单】批量删除
-	'admin/menus/deletes' => ['admin/menus/deletes', ['method' => 'POST']],
-	// 【菜单】批量启用/禁用
-	'admin/menus/enables' => ['admin/menus/enables', ['method' => 'POST']],
-	// 【组织架构】批量删除
-	'admin/structures/deletes' => ['admin/structures/deletes', ['method' => 'POST']],
-	// 【组织架构】批量启用/禁用
-	'admin/structures/enables' => ['admin/structures/enables', ['method' => 'POST']],
-	// 【部门】批量删除
-	'admin/posts/deletes' => ['admin/posts/deletes', ['method' => 'POST']],
-	// 【部门】批量启用/禁用
-	'admin/posts/enables' => ['admin/posts/enables', ['method' => 'POST']],
+	'admin/user/enables' => ['admin/users/enables', ['method' => 'POST']],
+    // 【医生】批量删除
+    'admin/doctor/deletes' => ['admin/doctor/deletes', ['method' => 'POST']],
+    // 【医生】批量启用/禁用
+    'admin/doctor/enables' => ['admin/doctor/enables', ['method' => 'POST']],
+    // 【护士】批量删除
+    'admin/nurse/deletes' => ['admin/nurse/deletes', ['method' => 'POST']],
+    // 【护士】批量启用/禁用
+    'admin/nurse/enables' => ['admin/nurse/enables', ['method' => 'POST']],
+    // 【病人】批量删除
+    'admin/patient/deletes' => ['admin/patient/deletes', ['method' => 'POST']],
+    // 【病人】批量启用/禁用
+    'admin/patient/enables' => ['admin/patient/enables', ['method' => 'POST']],
 	
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',
