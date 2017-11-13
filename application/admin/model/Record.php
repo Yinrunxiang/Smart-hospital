@@ -63,6 +63,7 @@ class Record extends Common
     public function createData($param)
     {
         // 验证
+        $param['create_time'] = date('y-m-d H:i:s');
         $validate = validate($this->name);
         if (!$validate->check($param)) {
             $this->error = $validate->getError();
