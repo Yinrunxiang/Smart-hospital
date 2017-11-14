@@ -77,5 +77,34 @@ class Record extends Common
             return false;
         }
     }
+    public function getRecordByUser($user,$usertype)
+    {
+        $map = [];
+        //根据keywords筛选信息
+        if ($user) {
+            $map['record.'.$usertype.'|'.$usertype.'.name'] = ['=',$user];
+        }
+        $dataCount = $this
+            ->where($map)
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->count('patient.id');
+
+        $list = $this
+            ->where($map)
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT');
+
+        $list = $list
+            ->field('record.*,patient.name as patient_name,doctor.name as doctor_name')
+            ->select();
+
+        $data['list'] = $list;
+        $data['dataCount'] = $dataCount;
+
+        return $data;
+    }
 
 }

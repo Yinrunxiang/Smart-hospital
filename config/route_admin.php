@@ -43,6 +43,14 @@ return [
     'admin/department/deletes' => ['admin/department/deletes', ['method' => 'POST']],
     // 【部门】批量启用/禁用
     'admin/department/enables' => ['admin/department/enables', ['method' => 'POST']],
+    // 【病历】获取医生工作病历
+    'admin/record/getRecordByDoctor' => ['admin/record/getRecordByDoctor', ['method' => 'POST']],
+    // 【病历】获取病人病历
+    'admin/record/getRecordByPatient' => ['admin/record/getRecordByPatient', ['method' => 'POST']],
+    // 【病历】批量删除
+    'admin/record/deletes' => ['admin/record/deletes', ['method' => 'POST']],
+    // 【病历】批量启用/禁用
+    'admin/record/enables' => ['admin/record/enables', ['method' => 'POST']],
 	// 【用户】批量删除
 	'admin/user/deletes' => ['admin/users/deletes', ['method' => 'POST']],
 	// 【用户】批量启用/禁用
