@@ -161,9 +161,8 @@ class User extends Common
      * [login 登录]
      * @AuthorHTL
      * @DateTime  2017-02-10T22:37:49+0800
-     * @param     [string]                   $u_username [账号]
-     * @param     [string]                   $u_pwd      [密码]
-     * @param     [string]                   $verifyCode [验证码]
+     * @param     [string]                   $tel [账号]
+     * @param     [string]                   $password      [密码]
      * @param     Boolean $isRemember [是否记住密码]
      * @param     Boolean $type [是否重复登录]
      * @return    [type]                               [description]

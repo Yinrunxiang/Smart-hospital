@@ -60,6 +60,84 @@ class Record extends Common
 
         return $data;
     }
+    public function getFirsetPatientByDoctor($doctor){
+        $map = [];
+        $map["doctor"] = ["=",$doctor];
+//        $map["begin_time"] = ["eq",null];
+        $getPatient = $this
+            ->where($map)
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->order('record.')
+            ->min('record.*,patient.name as patient_name,doctor.name as doctor_name');
+        return $getPatient;
+    }
+
+    public function beginTreatment($doctor){
+        $map = [];
+        $map["doctor.name|doctor.id"] = ["=",$doctor];
+        $map["begin_time"] = null;
+        $id = $this
+            ->where($map)
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->order('record.create_time')
+            ->min('record.Id');
+        $data = [];
+        $data["begin_time"] = date('y-m-d H:i:s');
+        $data["status"] = "1";
+        try {
+            $this->allowField(["begin_time","status"])->save($data, ["Id" => $id]);
+            return true;
+        } catch(\Exception $e) {
+            $this->error = 'Update failure';
+            return false;
+        }
+    }
+    public function endTreatment($doctor){
+        $map = [];
+        $map["doctor.name|doctor.id"] = ["=",$doctor];
+        $id = $this
+            ->where($map)
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->order('record.create_time')
+            ->min('record.Id');
+        $data = [];
+        $data["end_time"] = date('y-m-d H:i:s');
+        $data["status"] = "1";
+        try {
+            $this->allowField(["begin_time","status"])->save($data, ["Id" => $id]);
+            return true;
+        } catch(\Exception $e) {
+            $this->error = 'Update failure';
+            return false;
+        }
+    }
+    public function missTreatment($doctor){
+        $map = [];
+        $map["doctor.name|doctor.id"] = ["=",$doctor];
+        $id = $this
+            ->where($map)
+            ->alias('record')
+            ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->order('record.create_time')
+            ->min('record.Id');
+        $data = [];
+        $data["begin_time"] = date('y-m-d H:i:s');
+        $data["status"] = "1";
+        try {
+            $this->allowField(["begin_time","status"])->save($data, ["Id" => $id]);
+            return true;
+        } catch(\Exception $e) {
+            $this->error = 'Update failure';
+            return false;
+        }
+    }
     public function createData($param)
     {
         // 验证
@@ -106,5 +184,32 @@ class Record extends Common
 
         return $data;
     }
+    /**
+     * 通过id修改病历信息
+     * @param  array $param [description]
+     * @param  [string]  $id [病历ID]
+     * @param  array $param [description]
+     */
+    public function updateDataById($param, $id)
+    {
+        $checkData = $this->get($id);
+        if (!$checkData) {
+            $this->error = 'This data is not available';
+            return false;
+        }
+        $this->startTrans();
+
+        try {
+            $this->allowField(true)->save($param, ['Id' => $id]);
+            $this->commit();
+            return true;
+
+        } catch (\Exception $e) {
+            $this->rollback();
+            $this->error = 'Update failure';
+            return false;
+        }
+    }
+
 
 }

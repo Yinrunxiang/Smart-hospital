@@ -20,23 +20,6 @@ class Record extends ApiCommon
         $data = $recordModel->getDataList($keywords, $page, $limit);
         return resultArray(['data' => $data]);
     }
-    public function getRecordByDoctor()
-    {
-        $recordModel = model('Record');
-        $param = $this->param;
-        $doctor = !empty($param['doctor']) ? $param['doctor']: '';
-        $data = $recordModel->getRecordByUser($doctor,'doctor');
-        return resultArray(['data' => $data]);
-    }
-
-    public function getRecordByPatient()
-    {
-        $recordModel = model('Record');
-        $param = $this->param;
-        $patient = !empty($param['patient']) ? $param['patient']: '';
-        $data = $recordModel->getRecordByUser($patient,'patient');
-        return resultArray(['data' => $data]);
-    }
 
     public function read()
     {
@@ -103,6 +86,34 @@ class Record extends ApiCommon
         } 
         return resultArray(['data' => 'Successful operation']);
     }
-    
+
+    public function getRecordByDoctor()
+    {
+        $recordModel = model('Record');
+        $param = $this->param;
+        $doctor = !empty($param['doctor']) ? $param['doctor']: '';
+        $data = $recordModel->getRecordByUser($doctor,'doctor');
+        return resultArray(['data' => $data]);
+    }
+
+    public function getRecordByPatient()
+    {
+        $recordModel = model('Record');
+        $param = $this->param;
+        $patient = !empty($param['patient']) ? $param['patient']: '';
+        $data = $recordModel->getRecordByUser($patient,'patient');
+        return resultArray(['data' => $data]);
+    }
+
+    public function beginTreatment()
+    {
+        $recordModel = model('Record');
+        $param = $this->param;
+        $data = $recordModel->beginTreatment($param["doctor"]);
+        if (!$data) {
+            return resultArray(['error' => $recordModel->getError()]);
+        }
+        return resultArray(['data' => 'Update success']);
+    }
 }
  

@@ -47,6 +47,8 @@ return [
     'admin/record/getRecordByDoctor' => ['admin/record/getRecordByDoctor', ['method' => 'POST']],
     // 【病历】获取病人病历
     'admin/record/getRecordByPatient' => ['admin/record/getRecordByPatient', ['method' => 'POST']],
+    // 【病历】获取看病中的病人
+    'admin/record/beginTreatment' => ['admin/record/beginTreatment', ['method' => 'POST']],
     // 【病历】批量删除
     'admin/record/deletes' => ['admin/record/deletes', ['method' => 'POST']],
     // 【病历】批量启用/禁用
