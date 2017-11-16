@@ -115,5 +115,34 @@ class Record extends ApiCommon
         }
         return resultArray(['data' => 'Update success']);
     }
+
+    public function endTreatment()
+    {
+        $recordModel = model('Record');
+        $param = $this->param;
+        $data = $recordModel->endTreatment($param["doctor"]);
+        if (!$data) {
+            return resultArray(['error' => $recordModel->getError()]);
+        }
+        return resultArray(['data' => 'Update success']);
+    }
+
+    public function missTreatment()
+    {
+        $recordModel = model('Record');
+        $param = $this->param;
+        $data = $recordModel->missTreatment($param["doctor"]);
+        if (!$data) {
+            return resultArray(['error' => $recordModel->getError()]);
+        }
+        return resultArray(['data' => 'Update success']);
+    }
+    public  function treatmentTime()
+    {
+        $recordModel = model('Record');
+        $param = $this->param;
+        $data = $recordModel->treatmentTime($param["doctor"]);
+        return resultArray(['data' => $data]);
+    }
 }
  

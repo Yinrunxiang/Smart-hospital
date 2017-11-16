@@ -47,8 +47,14 @@ return [
     'admin/record/getRecordByDoctor' => ['admin/record/getRecordByDoctor', ['method' => 'POST']],
     // 【病历】获取病人病历
     'admin/record/getRecordByPatient' => ['admin/record/getRecordByPatient', ['method' => 'POST']],
-    // 【病历】获取看病中的病人
+    // 【病历】开始就诊的病人
     'admin/record/beginTreatment' => ['admin/record/beginTreatment', ['method' => 'POST']],
+    // 【病历】结束就诊的病人
+    'admin/record/endTreatment' => ['admin/record/endTreatment', ['method' => 'POST']],
+    // 【病历】错过就诊的病人
+    'admin/record/missTreatment' => ['admin/record/missTreatment', ['method' => 'POST']],
+    // 【病历】获取医生平均就诊时间
+    'admin/record/treatmentTime' => ['admin/record/treatmentTime', ['method' => 'POST']],
     // 【病历】批量删除
     'admin/record/deletes' => ['admin/record/deletes', ['method' => 'POST']],
     // 【病历】批量启用/禁用
