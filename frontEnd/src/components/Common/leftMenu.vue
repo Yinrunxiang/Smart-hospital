@@ -1,33 +1,17 @@
 <template>
   <div>
     <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark" @select="routerChange">
-      <el-menu-item index="global">
-        <i class="el-icon-menu"></i>Global</el-menu-item>
-      <el-menu-item index="contral">
-        <el-badge :value="deviceWarn" class="badge-div">
-          <i class="el-icon-menu"></i>Center
-        </el-badge>
+      <el-menu-item index="doctor">
+        <i class="el-icon-menu"></i>Doctor</el-menu-item>
+      <el-menu-item index="nurse">
+          <i class="el-icon-menu"></i>Nurse
       </el-menu-item>
-      <el-menu-item index="plan">
-        <i class="el-icon-menu"></i>Plan</el-menu-item>
-      <el-menu-item index="report">
-        <i class="el-icon-menu"></i>Report</el-menu-item>
-      <el-submenu index="111">
-         <template slot="title">
-          <i class="el-icon-setting"></i>Setting</template>
-        <el-submenu index="AddressType">
-        <template slot="title">Address Type</template>
-        <el-menu-item index="address">Address</el-menu-item>
-        <el-menu-item index="floor">Floor</el-menu-item>
-        <el-menu-item index="room">Room</el-menu-item>
-        </el-submenu>
-        <el-submenu index="DeviceType">
-          <template slot="title">Device Type</template>
-          <el-menu-item index="settingTypeAc">AC</el-menu-item>
-          <el-menu-item index="settingTypeLight">Light</el-menu-item>
-          <el-menu-item index="settingTypeLed">LED</el-menu-item>
-        </el-submenu>
-      </el-submenu>
+      <el-menu-item index="patient">
+        <i class="el-icon-menu"></i>Patient</el-menu-item>
+      <el-menu-item index="medicine">
+        <i class="el-icon-menu"></i>Medicine</el-menu-item>
+        <el-menu-item index="record">
+        <i class="el-icon-menu"></i>Record</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -53,55 +37,31 @@ export default {
     return {
       menuDatas: [
         {
-          title: 'Global',
-          url: '/home/global',
-          name: 'global'
+          title: 'Doctor',
+          url: '/home/doctor',
+          name: 'doctor'
         },
         {
-          title: 'Contral',
-          url: '/home/contral',
-          name: 'contral'
+          title: 'Nurse',
+          url: '/home/nurse',
+          name: 'nurse'
         },
         {
-          title: 'plan',
-          url: '/home/plan',
-          name: 'plan'
+          title: 'Patient',
+          url: '/home/patient',
+          name: 'patient'
         },
         {
-          title: 'report',
-          url: '/home/report',
-          name: 'report'
+          title: 'Medicine',
+          url: '/home/medicine',
+          name: 'medicine'
         },
         {
-          title: 'ac',
-          url: '/home/setting/type/ac',
-          name: 'settingTypeAc'
+          title: 'Record',
+          url: '/home/record',
+          name: 'record'
         },
-        {
-          title: 'light',
-          url: '/home/setting/type/light',
-          name: 'settingTypeLight'
-        },
-        {
-          title: 'led',
-          url: '/home/setting/type/led',
-          name: 'settingTypeLed'
-        },
-        {
-          title: 'address',
-          url: '/home/setting/address',
-          name: 'address'
-        },
-        {
-          title: 'floor',
-          url: '/home/setting/floor',
-          name: 'floor'
-        },
-        {
-          title: 'room',
-          url: '/home/setting/room',
-          name: 'room'
-        }
+       
 
       ],
     }

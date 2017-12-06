@@ -2,14 +2,14 @@
     <div>
         <div v-show="!setting" class="p-20">
             <div class="m-b-20 ovf-hd">
-                <!-- <div class="fl">
+                <div class="fl">
                     <el-button type="info" class="" @click="addressSetting">
                         <i class="el-icon-plus"></i>&nbsp;&nbsp;Add
                     </el-button>
                     <el-button type="warning" class="" @click="deleteBtn">
                         <i class="el-icon-minus"></i>&nbsp;&nbsp;Delete
                     </el-button>
-                </div> -->
+                </div>
                 <div class="fl w-300 m-l-30">
                     <el-input placeholder="Please enter the model" v-model="keywords">
                         <el-button slot="append" icon="search" @click="search()"></el-button>
@@ -19,11 +19,15 @@
             <el-table :data="tableData" style="width: 100%" @selection-change="selectItem" @row-dblclick="rowDblclick">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
-                <el-table-column label="Floor Name" prop="floor" width="150">
+                <el-table-column label="Name" prop="name" width="150">
                 </el-table-column>
-                <el-table-column label="Room Number" prop="room_num" width="150">
+                <el-table-column label="Sex" prop="sex" width="150">
                 </el-table-column>
-                <el-table-column label="Address" prop="address">
+                <el-table-column label="Age" prop="age" width="150">
+                </el-table-column>
+                <el-table-column label="Title" prop="title" width="150">
+                </el-table-column>
+                <el-table-column label="Tel" prop="tel" >
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
@@ -38,15 +42,15 @@
                 </div>
             </div>
         </div>
-        <div v-show="setting">
-            <add :add="add" :floor="floor" @goback="goback"></add>
+        <div v-if="setting">
+            <add :add="add" :selectData="selectData" @goback="goback"></add>
         </div>
     </div>
 </template>
 
 <script>
-import http from "../../../../assets/js/http";
-import list from "../../../../assets/js/list";
+import http from "../../../assets/js/http";
+import list from "../../../assets/js/list";
 import add from "./add";
 export default {
   //  currentPage        页码
@@ -56,14 +60,15 @@ export default {
   data() {
     return {
       tableData: [],
-      // dataCount: null,
+      selectData:{},
+      dataCount: null,
       currentPage: null,
       keywords: "",
       multipleSelection: [],
-      limit: 10,
+      limit: 15,
       add: true,
       setting: false,
-      floor: {}
+      selectData: {}
     };
   },
   methods: {
@@ -73,18 +78,19 @@ export default {
     addressSetting() {
       this.add = true;
       this.setting = true;
-      var floor = {
-        floor: "",
-        room_num: "",
-        address: "",
-        status: "enabled"
+      var data = {
+        name: "",
+        sex: "",
+        age: "",
+        title: "",
+        tel: "",
       };
-      this.floor = floor;
+      this.selectData = data;
     },
     rowDblclick(row) {
       this.add = false;
       this.setting = true;
-      this.floor = row;
+      this.selectData = row;
     },
     //获取被选中的数据
     selectItem(val) {
@@ -98,7 +104,7 @@ export default {
           status: status
         }
       };
-      this.apiGet("device/floor.php?action=setStatus", data).then(res => {
+      this.apiGet("device/address.php?action=setStatus", data).then(res => {
         if (res[0]) {
           for (var selection of this.multipleSelection) {
             selection.status = status;
@@ -122,17 +128,17 @@ export default {
               selections: this.multipleSelection
             }
           };
-          this.apiGet("device/floor.php?action=delete", data).then(res => {
+          this.apiDelete("device/address.php?action=delete", data).then(res => {
             if (res[0]) {
-              var floor = this.$store.state.floor;
-              for (var i = 0; i < floor.length; i++) {
+              var address = this.$store.state.address;
+              for (var i = 0; i < address.length; i++) {
                 for (var selection of this.multipleSelection) {
-                  if (floor[i].floor == selection.floor) {
-                    floor.splice(i, 1);
+                  if (address[i].address == selection.address) {
+                    address.splice(i, 1);
                   }
                 }
               }
-              this.$store.dispatch("setFloor", floor);
+              this.$store.dispatch("setAddress", address);
               _g.toastMsg("success", res[1]);
             } else {
               _g.toastMsg("error", res[1]);
@@ -144,75 +150,44 @@ export default {
         });
     },
     getAllData() {
-      // var pages = Math.ceil(this.dataCount/this.limit)
-      var data = [];
-      //   var devices = [];
-      //   devices = devcice.cancat(this.devices);
-      if (this.keywords != "") {
-        for (var floor of this.floors) {
-          if (floor.floor == this.keywords) {
-            data.push(floor);
-          }
+      const data = {
+        params: {
+          keywords: this.keywords,
+          page:this.currentPage,
+          limit:this.limit
         }
-      } else {
-        data = this.floors;
-      }
-
-      // var data = this.devices
-      var start = this.limit * (this.currentPage - 1);
-      var end = start + this.limit - 1;
-      this.tableData = data.slice(start, end);
+      };
+      this.apiGet("admin/doctor", data).then(res => {
+        if (res.code == 200) {
+          this.tableData = res.data.list
+          this.dataCount = res.data.dataCount
+          // this.$store.dispatch("setAddress", address);
+          // _g.toastMsg("success", res[1]);
+        } else {
+          // _g.toastMsg("error", res[1]);
+        }
+      });
     },
     //初始化时统一加载
     init() {
       this.getKeywords();
       this.getCurrentPage();
       this.getAllData();
-    }
-    // getFloor() {
-    //   const data = {
-    //     params: {
-    //       action: "search"
-    //     }
-    //   };
-    //   this.apiGet("device/floor.php", data).then(res => {
-    //     this.$store.dispatch("setFloor", res);
-    //   });
-    // },
+    },
   },
   created() {
-    console.log("floor");
-    // this.getFloor()
-
+    console.log("doctor");
     this.init();
-  },
-  mounted() {
-    
   },
   components: {
     add
   },
-  computed: {
-    //从vuex中获取设备数据
-    floors() {
-      return this.$store.state.floor;
-    },
-    //从vuex中获取设备数据条数
-    dataCount() {
-      return this.$store.state.floor.length;
-    }
-  },
+  computed: {},
   watch: {
     $route(to, from) {
       this.init();
-    },
-    floors: {
-      handler: function(val, oldVal) {
-        this.init();
-      },
-      deep: true
     }
   },
-  mixins: [http,list]
+  mixins: [http, list]
 };
 </script>

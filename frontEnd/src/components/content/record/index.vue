@@ -2,14 +2,14 @@
     <div>
         <div v-show="!setting" class="p-20">
             <div class="m-b-20 ovf-hd">
-                <!-- <div class="fl">
+                <div class="fl">
                     <el-button type="info" class="" @click="addressSetting">
                         <i class="el-icon-plus"></i>&nbsp;&nbsp;Add
                     </el-button>
                     <el-button type="warning" class="" @click="deleteBtn">
                         <i class="el-icon-minus"></i>&nbsp;&nbsp;Delete
                     </el-button>
-                </div> -->
+                </div>
                 <div class="fl w-300 m-l-30">
                     <el-input placeholder="Please enter the model" v-model="keywords">
                         <el-button slot="append" icon="search" @click="search()"></el-button>
@@ -19,17 +19,22 @@
             <el-table :data="tableData" style="width: 100%" @selection-change="selectItem" @row-dblclick="rowDblclick">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
-                <el-table-column label="Room" prop="room" width="150">
+                <el-table-column label="Name" prop="name" width="150">
                 </el-table-column>
-                <el-table-column label="Room Name" prop="room_name" width="150">
+                <el-table-column label="Sex" prop="sex" width="150">
                 </el-table-column>
-                <el-table-column label="Floor" prop="floor" width="150">
+                <el-table-column label="Age" prop="age" width="150">
                 </el-table-column>
-                <el-table-column label="Address" prop="address">
+                <el-table-column label="Title" prop="title" width="150">
+                </el-table-column>
+                <el-table-column label="Tel" prop="tel" >
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
                 <div>
+                    <!-- <el-button size="small" type="success" @click="setStatusBtn('enabled')">Enabled</el-button>
+                    <el-button size="small" type="warning" @click="setStatusBtn('disabled')">Disabled</el-button>
+                    <el-button size="small" type="danger" @click="deleteBtn()">Delete</el-button> -->
                 </div>
                 <div class="block pages">
                     <el-pagination @current-change="handleCurrentChange" layout="prev, pager, next" :page-size="limit" :current-page="currentPage" :total="dataCount">
@@ -37,15 +42,15 @@
                 </div>
             </div>
         </div>
-        <div v-show="setting">
-            <add :add="add" :room="room" @goback="goback"></add>
+        <div v-if="setting">
+            <add :add="add" :selectData="selectData" @goback="goback"></add>
         </div>
     </div>
 </template>
 
 <script>
-import http from "../../../../assets/js/http";
-import list from "../../../../assets/js/list";
+import http from "../../../assets/js/http";
+import list from "../../../assets/js/list";
 import add from "./add";
 export default {
   //  currentPage        页码
@@ -55,14 +60,15 @@ export default {
   data() {
     return {
       tableData: [],
-      // dataCount: null,
+      selectData:{},
+      dataCount: null,
       currentPage: null,
       keywords: "",
       multipleSelection: [],
       limit: 15,
       add: true,
       setting: false,
-      room: {}
+      selectData: {}
     };
   },
   methods: {
@@ -72,19 +78,19 @@ export default {
     addressSetting() {
       this.add = true;
       this.setting = true;
-      var room = {
-        room: "",
-        room_num: "",
-        floor: "",
-        address: "",
-        status: "enabled"
+      var data = {
+        name: "",
+        sex: "",
+        age: "",
+        title: "",
+        tel: "",
       };
-      this.room = room;
+      this.selectData = data;
     },
     rowDblclick(row) {
       this.add = false;
       this.setting = true;
-      this.room = row;
+      this.selectData = row;
     },
     //获取被选中的数据
     selectItem(val) {
@@ -98,7 +104,7 @@ export default {
           status: status
         }
       };
-      this.apiGet("device/room.php?action=setStatus", data).then(res => {
+      this.apiGet("device/address.php?action=setStatus", data).then(res => {
         if (res[0]) {
           for (var selection of this.multipleSelection) {
             selection.status = status;
@@ -111,7 +117,6 @@ export default {
     },
     //删除按钮事件
     deleteBtn() {
-      var vm = this;
       this.$confirm("Are you sure to delete the selected data?", "Tips", {
         confirmButtonText: "Yse",
         cancelButtonText: "No",
@@ -123,17 +128,17 @@ export default {
               selections: this.multipleSelection
             }
           };
-          this.apiGet("device/room.php?action=delete", data).then(res => {
+          this.apiDelete("device/address.php?action=delete", data).then(res => {
             if (res[0]) {
-              var room = vm.$store.state.room;
-              for (var i = 0; i < room.length; i++) {
-                for (var selection of vm.multipleSelection) {
-                  if (room[i].room == selection.room) {
-                    room.splice(i, 1);
+              var address = this.$store.state.address;
+              for (var i = 0; i < address.length; i++) {
+                for (var selection of this.multipleSelection) {
+                  if (address[i].address == selection.address) {
+                    address.splice(i, 1);
                   }
                 }
               }
-              this.$store.dispatch("setRoom", room);
+              this.$store.dispatch("setAddress", address);
               _g.toastMsg("success", res[1]);
             } else {
               _g.toastMsg("error", res[1]);
@@ -145,67 +150,42 @@ export default {
         });
     },
     getAllData() {
-      // var pages = Math.ceil(this.dataCount/this.limit)
-      var data = [];
-      //   var devices = [];
-      //   devices = devcice.cancat(this.devices);
-      if (this.keywords != "") {
-        for (var room of this.rooms) {
-          if (room.room_name == this.keywords) {
-            data.push(room);
-          }
+      const data = {
+        params: {
+          keywords: this.keywords,
+          page:this.currentPage,
+          limit:this.limit
         }
-      } else {
-        data = this.rooms;
-      }
-
-      // var data = this.devices
-      var start = this.limit * (this.currentPage - 1);
-      var end = start + this.limit - 1;
-      this.tableData = data.slice(start, end);
+      };
+      this.apiGet("admin/record", data).then(res => {
+        if (res.code == 200) {
+          this.tableData = res.data.list
+          this.dataCount = res.data.dataCount
+          // this.$store.dispatch("setAddress", address);
+          // _g.toastMsg("success", res[1]);
+        } else {
+          // _g.toastMsg("error", res[1]);
+        }
+      });
     },
     //初始化时统一加载
     init() {
       this.getKeywords();
       this.getCurrentPage();
       this.getAllData();
-    }
+    },
   },
   created() {
-    console.log("room");
-    // this.getRoom()
+    console.log("doctor");
     this.init();
   },
   components: {
     add
   },
-  // watch: {
-  //   tableData: {
-  //     handler: function(val, oldVal) {
-  //       this.countryArr();
-  //     },
-  //     deep: true
-  //   }
-  // },
-  computed: {
-    //从vuex中获取设备数据
-    rooms() {
-      return this.$store.state.room;
-    },
-    //从vuex中获取设备数据条数
-    dataCount() {
-      return this.$store.state.room.length;
-    }
-  },
+  computed: {},
   watch: {
     $route(to, from) {
       this.init();
-    },
-    rooms: {
-      handler: function(val, oldVal) {
-        this.init();
-      },
-      deep: true
     }
   },
   mixins: [http, list]

@@ -7,7 +7,7 @@
 					<!-- <img :src="img" class="logo"> -->
 				</template>
 				<template v-else>
-					<a class="p-l-10"  style="cursor:pointer"  @click="homeClick()"><img src="../assets/images/applog.png" class="logo">SMART GBMS</a>
+					<a class="p-l-10"  style="cursor:pointer"  @click="homeClick()"><img src="../assets/images/applog.png" class="logo">Smart Hospital</a>
 				</template>
 			</el-col>
       <el-col :span="18" class="h-60">
@@ -687,51 +687,51 @@ export default {
     }
   },
   created() {
-    console.log("report");
-    let username = Lockr.get("username");
-    let password = Lockr.get("password");
-    this.username = username;
-    if (!username || !password) {
-      _g.toastMsg("warning", "You are not logged in yet");
-      setTimeout(() => {
-        router.replace("/");
-      }, 1500);
-      return;
-    }
-    let port = Lockr.get("port");
-    var socketio = socket("http://" + document.domain + ":" + port);
-    window.socketio = socketio;
+    // console.log("report");
+    // let username = Lockr.get("username");
+    // let password = Lockr.get("password");
+    // this.username = username;
+    // if (!username || !password) {
+    //   _g.toastMsg("warning", "You are not logged in yet");
+    //   setTimeout(() => {
+    //     router.replace("/");
+    //   }, 1500);
+    //   return;
+    // }
+    // let port = Lockr.get("port");
+    // var socketio = socket("http://" + document.domain + ":" + port);
+    // window.socketio = socketio;
     this.$store.dispatch("setShowHotel", true);
     this.$store.dispatch("setShowFloor", false);
     this.$store.dispatch("setShowRoom", false);
   },
   mounted() {
-    this.getAcBreed();
-    this.getLightBreed();
-    this.getLedBreed();
-    this.getAddress();
-    this.getFloor();
-    this.getRoom();
+    // this.getAcBreed();
+    // this.getLightBreed();
+    // this.getLedBreed();
+    // this.getAddress();
+    // this.getFloor();
+    // this.getRoom();
 
-    const data = {
-      params: {
-        action: "search"
-      }
-    };
-    this.apiGet("device/index.php", data).then(res => {
-      this.$store.dispatch("setDevices", res);
-      // var devices = [];
-      var maxid = res[0].maxid;
-      this.$store.dispatch("setMaxid", maxid);
-      // for (var device of res) {
-      //   if (device.status == "enabled") {
-      //     devices.push(device);
-      //   }
-      // }
-      // this.devices = devices
-      this.countryArr();
-    });
-    this.getRecordCount();
+    // const data = {
+    //   params: {
+    //     action: "search"
+    //   }
+    // };
+    // this.apiGet("device/index.php", data).then(res => {
+    //   this.$store.dispatch("setDevices", res);
+    //   // var devices = [];
+    //   var maxid = res[0].maxid;
+    //   this.$store.dispatch("setMaxid", maxid);
+    //   // for (var device of res) {
+    //   //   if (device.status == "enabled") {
+    //   //     devices.push(device);
+    //   //   }
+    //   // }
+    //   // this.devices = devices
+    //   this.countryArr();
+    // });
+    // this.getRecordCount();
   },
   components: {
     leftMenu,
@@ -739,12 +739,12 @@ export default {
     changePwd
   },
   computed: {
-    devices() {
-      return this.$store.state.devices;
-    },
-    globalLoading() {
-      return store.state.globalLoading;
-    }
+    // devices() {
+    //   return this.$store.state.devices;
+    // },
+    // globalLoading() {
+    //   return store.state.globalLoading;
+    // }
   },
   watch: {
     devices: {

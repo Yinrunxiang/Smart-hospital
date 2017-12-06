@@ -19,23 +19,15 @@
             <el-table :data="tableData" style="width: 100%" @selection-change="selectItem" @row-dblclick="rowDblclick">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
-                <el-table-column label="Country" prop="country" width="150">
+                <el-table-column label="Name" prop="name" width="150">
                 </el-table-column>
-                <el-table-column label="Building" prop="address" width="150">
+                <el-table-column label="Sex" prop="sex" width="150">
                 </el-table-column>
-                <el-table-column label="IP" prop="ip" width="150">
+                <el-table-column label="Age" prop="age" width="150">
                 </el-table-column>
-                <el-table-column label="Port" prop="port" width="150">
+                <el-table-column label="Title" prop="title" width="150">
                 </el-table-column>
-                <el-table-column label="MAC" prop="mac" width="200">
-                </el-table-column>
-                <el-table-column label="Latitude" prop="lat" width="200">
-                </el-table-column>
-                <el-table-column label="Longitude" prop="lng" width="200">
-                </el-table-column>
-                <el-table-column label="KW/USD" prop="kw_usd" width="200">
-                </el-table-column>
-                <el-table-column label="Status" prop="status">
+                <el-table-column label="Tel" prop="tel" >
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
@@ -51,14 +43,14 @@
             </div>
         </div>
         <div v-if="setting">
-            <add :add="add" :address="address" @goback="goback"></add>
+            <add :add="add" :selectData="selectData" @goback="goback"></add>
         </div>
     </div>
 </template>
 
 <script>
-import http from "../../../../assets/js/http";
-import list from "../../../../assets/js/list";
+import http from "../../../assets/js/http";
+import list from "../../../assets/js/list";
 import add from "./add";
 export default {
   //  currentPage        页码
@@ -68,14 +60,15 @@ export default {
   data() {
     return {
       tableData: [],
-      // dataCount: null,
+      selectData:{},
+      dataCount: null,
       currentPage: null,
       keywords: "",
       multipleSelection: [],
       limit: 15,
       add: true,
       setting: false,
-      address: {}
+      selectData: {}
     };
   },
   methods: {
@@ -85,22 +78,19 @@ export default {
     addressSetting() {
       this.add = true;
       this.setting = true;
-      var address = {
-        country: "",
-        address: "",
-        ip: "",
-        port: "",
-        mac: "",
-        lat: "",
-        lng: "",
-        status: "enabled"
+      var data = {
+        name: "",
+        sex: "",
+        age: "",
+        title: "",
+        tel: "",
       };
-      this.address = address;
+      this.selectData = data;
     },
     rowDblclick(row) {
       this.add = false;
       this.setting = true;
-      this.address = row;
+      this.selectData = row;
     },
     //获取被选中的数据
     selectItem(val) {
@@ -138,7 +128,7 @@ export default {
               selections: this.multipleSelection
             }
           };
-          this.apiGet("device/address.php?action=delete", data).then(res => {
+          this.apiDelete("device/address.php?action=delete", data).then(res => {
             if (res[0]) {
               var address = this.$store.state.address;
               for (var i = 0; i < address.length; i++) {
@@ -159,61 +149,45 @@ export default {
           // catch error
         });
     },
-     getAllData() {
-      // var pages = Math.ceil(this.dataCount/this.limit)
-      var data = [];
-      //   var devices = [];
-      //   devices = devcice.cancat(this.devices);
-      if (this.keywords != "") {
-        for (var address of this.addresss) {
-          if (address.address == this.keywords) {
-            data.push(address);
-          }
+    getAllData() {
+      const data = {
+        params: {
+          keywords: this.keywords,
+          page:this.currentPage,
+          limit:this.limit
         }
-      } else {
-        data = this.addresss;
-      }
-
-      // var data = this.devices
-      var start = this.limit * (this.currentPage - 1);
-      var end = start + this.limit - 1;
-      this.tableData = data.slice(start, end);
+      };
+      this.apiGet("admin/patient", data).then(res => {
+        if (res.code == 200) {
+          this.tableData = res.data.list
+          this.dataCount = res.data.dataCount
+          // this.$store.dispatch("setAddress", address);
+          // _g.toastMsg("success", res[1]);
+        } else {
+          // _g.toastMsg("error", res[1]);
+        }
+      });
     },
     //初始化时统一加载
     init() {
       this.getKeywords();
       this.getCurrentPage();
-      this.getAllData()
-    }
+      this.getAllData();
+    },
   },
   created() {
-    console.log("address");
+    console.log("doctor");
     this.init();
   },
   components: {
     add
   },
-  computed: {
-    //从vuex中获取设备数据
-    addresss() {
-      return this.$store.state.address;
-    },
-    //从vuex中获取设备数据条数
-    dataCount() {
-      return this.$store.state.address.length;
-    }
-  },
+  computed: {},
   watch: {
     $route(to, from) {
       this.init();
-    },
-    addresss: {
-      handler: function(val, oldVal) {
-        this.init();
-      },
-      deep: true
     }
   },
-  mixins: [http,list]
+  mixins: [http, list]
 };
 </script>
