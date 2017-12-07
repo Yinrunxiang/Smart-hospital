@@ -96,49 +96,27 @@ export default {
     selectItem(val) {
       this.multipleSelection = val;
     },
-    //保存状态点击事件
-    setStatusBtn(status) {
-      const data = {
-        params: {
-          selections: this.multipleSelection,
-          status: status
-        }
-      };
-      this.apiGet("device/address.php?action=setStatus", data).then(res => {
-        if (res[0]) {
-          for (var selection of this.multipleSelection) {
-            selection.status = status;
-          }
-          _g.toastMsg("success", res[1]);
-        } else {
-          _g.toastMsg("error", res[1]);
-        }
-      });
-    },
     //删除按钮事件
     deleteBtn() {
+      var vm = this
       this.$confirm("Are you sure to delete the selected data?", "Tips", {
         confirmButtonText: "Yse",
         cancelButtonText: "No",
         type: "warning"
       })
         .then(() => {
+          var ids = []
+          for(var selection of vm.multipleSelection ){
+            ids.push(selection.Id)
+          }
           const data = {
             params: {
-              selections: this.multipleSelection
+              ids: ids
             }
           };
-          this.apiDelete("device/address.php?action=delete", data).then(res => {
+          this.apiPost("admin/record/deletes", data).then(res => {
             if (res[0]) {
-              var address = this.$store.state.address;
-              for (var i = 0; i < address.length; i++) {
-                for (var selection of this.multipleSelection) {
-                  if (address[i].address == selection.address) {
-                    address.splice(i, 1);
-                  }
-                }
-              }
-              this.$store.dispatch("setAddress", address);
+              this.getAllData()
               _g.toastMsg("success", res[1]);
             } else {
               _g.toastMsg("error", res[1]);

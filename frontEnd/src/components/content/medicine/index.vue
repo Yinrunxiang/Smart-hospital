@@ -21,13 +21,11 @@
                 </el-table-column>
                 <el-table-column label="Name" prop="name" width="150">
                 </el-table-column>
-                <el-table-column label="Sex" prop="sex" width="150">
+                <el-table-column label="Type" prop="type" width="150">
                 </el-table-column>
-                <el-table-column label="Age" prop="age" width="150">
+                <el-table-column label="Effect" prop="effect" width="150">
                 </el-table-column>
-                <el-table-column label="Title" prop="title" width="150">
-                </el-table-column>
-                <el-table-column label="Tel" prop="tel" >
+                <el-table-column label="Comment" prop="comment">
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
@@ -80,10 +78,10 @@ export default {
       this.setting = true;
       var data = {
         name: "",
-        sex: "",
-        age: "",
+        type: "",
+        effect: "",
         title: "",
-        tel: "",
+        comment: "",
       };
       this.selectData = data;
     },
@@ -157,7 +155,7 @@ export default {
           limit:this.limit
         }
       };
-      this.apiGet("admin/doctor", data).then(res => {
+      this.apiGet("admin/medicine", data).then(res => {
         if (res.code == 200) {
           this.tableData = res.data.list
           this.dataCount = res.data.dataCount

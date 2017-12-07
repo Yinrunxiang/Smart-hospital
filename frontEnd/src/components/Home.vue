@@ -11,7 +11,7 @@
 				</template>
 			</el-col>
       <el-col :span="18" class="h-60">
-        <topMenu ref="topMenu"></topMenu>
+        <!-- <topMenu ref="topMenu"></topMenu> -->
       </el-col>
 			<el-col  :span="2" class="pos-rel">
 				<el-dropdown @command="handleMenu" class="user-menu">
