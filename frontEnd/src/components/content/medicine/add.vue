@@ -4,17 +4,14 @@
             <el-form-item label="Name">
                 <el-input v-model.trim="selectData.name" class="h-40 w-200"></el-input>
             </el-form-item>
-            <el-form-item label="sex">
-                <el-input v-model.trim="selectData.sex" class="h-40 w-200"></el-input>
+            <el-form-item label="Type">
+                <el-input v-model.trim="selectData.type" class="h-40 w-200"></el-input>
             </el-form-item>
-            <el-form-item label="age">
-                <el-input v-model.trim="selectData.age" class="h-40 w-200"></el-input>
+            <el-form-item label="Effect">
+                <el-input v-model.trim="selectData.effect" class="h-40 w-200"></el-input>
             </el-form-item>
-            <el-form-item label="title">
+            <el-form-item label="Comment">
                 <el-input v-model.trim="selectData.title" class="h-40 w-200"></el-input>
-            </el-form-item>
-            <el-form-item label="tel">
-                <el-input v-model.trim="selectData.tel" class="h-40 w-200"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="addData()" :loading="isLoading">Save</el-button>
@@ -25,13 +22,13 @@
 </template>
 
 <script>
-import http from "../../../assets/js/http"
+import http from "../../../assets/js/http";
 // import fomrMixin from '../../../../assets/js/form_com'
 
 export default {
   data() {
     return {
-      isLoading: false,
+      isLoading: false
     };
   },
   methods: {
@@ -39,39 +36,33 @@ export default {
       this.$emit("goback", false);
     },
     addData() {
-      this.isLoading = !this.isLoading;
-      const data = {
-        params: this.selectData
-      };
-
+      const data = this.selectData;
+      let vm = this
       if (this.add) {
-        this.apiPost("admin/doctor", data).then(res => {
+        this.apiPost("admin/medicine", data).then(res => {
           // _g.clearVuex('setRules')
-          if (res[0]) {
-  
+          if (res.code == 200) {
+            _g.toastMsg("success", res.data);
+            vm.goback()
           } else {
-            _g.toastMsg("error", res[1]);
+            _g.toastMsg("error", res.error);
           }
-          this.isLoading = false;
         });
       } else {
-        this.apiPut("device/address.php?action=update", data).then(res => {
+        this.apiPut("admin/medicine", data).then(res => {
           // _g.clearVuex('setRules')
-          if (res[0]) {
-            
+          if (res.code == 200) {
+            _g.toastMsg("success", res.data);
           } else {
-            _g.toastMsg("error", res[1]);
+            _g.toastMsg("error", res.error);
           }
-          this.isLoading = false;
         });
       }
-    },
+    }
   },
   props: ["add", "selectData"],
-  mounted() {
-  },
-  computed: {
-  },
+  mounted() {},
+  computed: {},
   components: {},
   mixins: [http]
 };

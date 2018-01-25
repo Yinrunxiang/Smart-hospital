@@ -75,6 +75,10 @@ return [
     'admin/patient/deletes' => ['admin/patient/deletes', ['method' => 'POST']],
     // 【病人】批量启用/禁用
     'admin/patient/enables' => ['admin/patient/enables', ['method' => 'POST']],
+    // 【药物】批量删除
+    'admin/medicine/deletes' => ['admin/medicine/deletes', ['method' => 'POST']],
+    // 【药物】批量启用/禁用
+    'admin/medicine/enables' => ['admin/medicine/enables', ['method' => 'POST']],
 	
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',

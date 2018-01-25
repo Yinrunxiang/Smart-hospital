@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import http from "../../../assets/js/http"
+import http from "../../../assets/js/http";
 // import fomrMixin from '../../../../assets/js/form_com'
 
 export default {
   data() {
     return {
-      isLoading: false,
+      isLoading: false
     };
   },
   methods: {
@@ -40,38 +40,34 @@ export default {
     },
     addData() {
       this.isLoading = !this.isLoading;
-      const data = {
-        params: this.selectData
-      };
+      const data = this.selectData
 
       if (this.add) {
-        this.apiPost("admin/doctor", data).then(res => {
+        this.apiPost("admin/record", data).then(res => {
           // _g.clearVuex('setRules')
-          if (res[0]) {
-  
+          if (res.code == 200) {
+            _g.toastMsg("error", res.data);
           } else {
-            _g.toastMsg("error", res[1]);
+            _g.toastMsg("error", res.error);
           }
           this.isLoading = false;
         });
       } else {
         this.apiPut("device/address.php?action=update", data).then(res => {
           // _g.clearVuex('setRules')
-          if (res[0]) {
-            
+          if (res.code == 200) {
+            _g.toastMsg("error", res.data);
           } else {
-            _g.toastMsg("error", res[1]);
+            _g.toastMsg("error", res.error);
           }
           this.isLoading = false;
         });
       }
-    },
+    }
   },
   props: ["add", "selectData"],
-  mounted() {
-  },
-  computed: {
-  },
+  mounted() {},
+  computed: {},
   components: {},
   mixins: [http]
 };

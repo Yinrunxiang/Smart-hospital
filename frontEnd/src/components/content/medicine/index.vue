@@ -3,7 +3,7 @@
         <div v-show="!setting" class="p-20">
             <div class="m-b-20 ovf-hd">
                 <div class="fl">
-                    <el-button type="info" class="" @click="addressSetting">
+                    <el-button type="info" class="" @click="addBtn">
                         <i class="el-icon-plus"></i>&nbsp;&nbsp;Add
                     </el-button>
                     <el-button type="warning" class="" @click="deleteBtn">
@@ -72,8 +72,9 @@ export default {
   methods: {
     goback(bool) {
       this.setting = bool;
+      this.getAllData()
     },
-    addressSetting() {
+    addBtn() {
       this.add = true;
       this.setting = true;
       var data = {
@@ -121,25 +122,20 @@ export default {
         type: "warning"
       })
         .then(() => {
+          let ids = []
+          for(let select of this.multipleSelection){
+            ids.push(select.Id)
+          }
           const data = {
-            params: {
-              selections: this.multipleSelection
-            }
+              ids: ids
           };
-          this.apiDelete("device/address.php?action=delete", data).then(res => {
-            if (res[0]) {
-              var address = this.$store.state.address;
-              for (var i = 0; i < address.length; i++) {
-                for (var selection of this.multipleSelection) {
-                  if (address[i].address == selection.address) {
-                    address.splice(i, 1);
-                  }
-                }
-              }
-              this.$store.dispatch("setAddress", address);
-              _g.toastMsg("success", res[1]);
+          var vm = this
+          this.apiPost("admin/medicine/deletes", data).then(res => {
+            if (res.code == 200) {
+              _g.toastMsg("success", res.data);
+              vm.getAllData()
             } else {
-              _g.toastMsg("error", res[1]);
+              _g.toastMsg("error", res.error);
             }
           });
         })
