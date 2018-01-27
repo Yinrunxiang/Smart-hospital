@@ -59,6 +59,8 @@ return [
     'admin/record/deletes' => ['admin/record/deletes', ['method' => 'POST']],
     // 【病历】批量启用/禁用
     'admin/record/enables' => ['admin/record/enables', ['method' => 'POST']],
+    // 【病历】更新
+    'admin/record/update' => ['admin/record/update', ['method' => 'POST']],
 	// 【用户】批量删除
 	'admin/user/deletes' => ['admin/users/deletes', ['method' => 'POST']],
 	// 【用户】批量启用/禁用
@@ -67,6 +69,8 @@ return [
     'admin/doctor/deletes' => ['admin/doctor/deletes', ['method' => 'POST']],
     // 【医生】批量启用/禁用
     'admin/doctor/enables' => ['admin/doctor/enables', ['method' => 'POST']],
+    // 【医生】更新
+    'admin/doctor/update' => ['admin/doctor/update', ['method' => 'POST']],
     // 【护士】批量删除
     'admin/nurse/deletes' => ['admin/nurse/deletes', ['method' => 'POST']],
     // 【护士】批量启用/禁用
@@ -79,6 +83,8 @@ return [
     'admin/medicine/deletes' => ['admin/medicine/deletes', ['method' => 'POST']],
     // 【药物】批量启用/禁用
     'admin/medicine/enables' => ['admin/medicine/enables', ['method' => 'POST']],
+    // 【药物】更新数据
+    'admin/medicine/update' => ['admin/medicine/update', ['method' => 'POST']],
 	
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',

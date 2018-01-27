@@ -11,7 +11,7 @@
                 <el-input v-model.trim="selectData.effect" class="h-40 w-200"></el-input>
             </el-form-item>
             <el-form-item label="Comment">
-                <el-input v-model.trim="selectData.title" class="h-40 w-200"></el-input>
+                <el-input v-model.trim="selectData.comment" class="h-40 w-200"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="addData()" :loading="isLoading">Save</el-button>
@@ -49,16 +49,20 @@ export default {
           }
         });
       } else {
-        this.apiPut("admin/medicine", data).then(res => {
+        this.apiPost("admin/medicine/update", data).then(res => {
           // _g.clearVuex('setRules')
           if (res.code == 200) {
             _g.toastMsg("success", res.data);
+            vm.goback()
           } else {
             _g.toastMsg("error", res.error);
           }
         });
       }
     }
+  },
+  created(){
+    console.log('medicineAdd')
   },
   props: ["add", "selectData"],
   mounted() {},

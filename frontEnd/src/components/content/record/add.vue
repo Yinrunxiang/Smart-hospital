@@ -40,23 +40,25 @@ export default {
     },
     addData() {
       this.isLoading = !this.isLoading;
-      const data = this.selectData
+      const data = this.selectData;
 
       if (this.add) {
         this.apiPost("admin/record", data).then(res => {
           // _g.clearVuex('setRules')
           if (res.code == 200) {
             _g.toastMsg("error", res.data);
+            vm.goback();
           } else {
             _g.toastMsg("error", res.error);
           }
           this.isLoading = false;
         });
       } else {
-        this.apiPut("device/address.php?action=update", data).then(res => {
+        this.apiPost("admin/record/update", data).then(res => {
           // _g.clearVuex('setRules')
           if (res.code == 200) {
             _g.toastMsg("error", res.data);
+            vm.goback();
           } else {
             _g.toastMsg("error", res.error);
           }

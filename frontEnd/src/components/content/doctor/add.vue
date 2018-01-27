@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import http from "../../../assets/js/http"
+import http from "../../../assets/js/http";
 // import fomrMixin from '../../../../assets/js/form_com'
 
 export default {
   data() {
     return {
-      isLoading: false,
+      isLoading: false
     };
   },
   methods: {
@@ -43,35 +43,35 @@ export default {
       const data = {
         params: this.selectData
       };
-
+      let vm = this;
       if (this.add) {
         this.apiPost("admin/doctor", data).then(res => {
           // _g.clearVuex('setRules')
           if (res[0]) {
-  
+            _g.toastMsg("success", res.data);
+            vm.goback();
           } else {
-            _g.toastMsg("error", res[1]);
+            _g.toastMsg("error", res.error);
           }
           this.isLoading = false;
         });
       } else {
-        this.apiPut("device/address.php?action=update", data).then(res => {
+        this.apiPost("admin/doctor/update", data).then(res => {
           // _g.clearVuex('setRules')
           if (res[0]) {
-            
+            _g.toastMsg("success", res.data);
+            vm.goback();
           } else {
-            _g.toastMsg("error", res[1]);
+            _g.toastMsg("error", res.error);
           }
           this.isLoading = false;
         });
       }
-    },
+    }
   },
   props: ["add", "selectData"],
-  mounted() {
-  },
-  computed: {
-  },
+  mounted() {},
+  computed: {},
   components: {},
   mixins: [http]
 };

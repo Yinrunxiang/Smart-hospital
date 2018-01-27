@@ -98,40 +98,40 @@ class Doctor extends Common
      * 创建用户
      * @param  array $param [description]
      */
-//    public function createData($param)
-//    {
-//        if (empty($param['department_name'])) {
-//            $this->error = 'Please check at least one department';
-//            return false;
-//        }
-//
-//        // 验证
-//        $validate = validate($this->name);
-//        if (!$validate->check($param)) {
-//            $this->error = $validate->getError();
-//            return false;
-//        }
-//
-//        $this->startTrans();
-//        try {
-//            $param['doctor_password'] = user_md5($param['doctor_password']);
-//            $this->data($param)->allowField(true)->save();
-//
-////			foreach ($param['doctor'] as $k => $v) {
-////				$userGroup['user_id'] = $this->id;
-////				$userGroup['group_id'] = $v;
-////				$userGroups[] = $userGroup;
-////			}
-////			Db::name('admin_access')->insertAll($userGroups);
-//
-//            $this->commit();
-//            return true;
-//        } catch (\Exception $e) {
-//            $this->rollback();
-//            $this->error = 'Add failure';
-//            return false;
-//        }
-//    }
+   public function createData($param)
+   {
+       if (empty($param['department_name'])) {
+           $this->error = 'Please check at least one department';
+           return false;
+       }
+
+       // 验证
+       $validate = validate($this->name);
+       if (!$validate->check($param)) {
+           $this->error = $validate->getError();
+           return false;
+       }
+
+       $this->startTrans();
+       try {
+           $param['doctor_password'] = user_md5($param['doctor_password']);
+           $this->data($param)->allowField(true)->save();
+
+//			foreach ($param['doctor'] as $k => $v) {
+//				$userGroup['user_id'] = $this->id;
+//				$userGroup['group_id'] = $v;
+//				$userGroups[] = $userGroup;
+//			}
+//			Db::name('admin_access')->insertAll($userGroups);
+
+           $this->commit();
+           return true;
+       } catch (\Exception $e) {
+           $this->rollback();
+           $this->error = 'Add failure';
+           return false;
+       }
+   }
 
     /**
      * 通过id修改用户

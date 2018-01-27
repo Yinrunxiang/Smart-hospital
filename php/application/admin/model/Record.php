@@ -115,26 +115,26 @@ class Record extends Common
      * @param  [string]  $id [病历ID]
      * @param  array $param [description]
      */
-    public function updateDataById($param, $id)
-    {
-        $checkData = $this->get($id);
-        if (!$checkData) {
-            $this->error = 'This data is not available';
-            return false;
-        }
-        $this->startTrans();
+    // public function updateDataById($param, $id)
+    // {
+    //     $checkData = $this->get($id);
+    //     if (!$checkData) {
+    //         $this->error = 'This data is not available';
+    //         return false;
+    //     }
+    //     $this->startTrans();
 
-        try {
-            $this->allowField(true)->save($param, ['Id' => $id]);
-            $this->commit();
-            return true;
+    //     try {
+    //         $this->allowField(true)->save($param, ['Id' => $id]);
+    //         $this->commit();
+    //         return true;
 
-        } catch (\Exception $e) {
-            $this->rollback();
-            $this->error = 'Update failure';
-            return false;
-        }
-    }
+    //     } catch (\Exception $e) {
+    //         $this->rollback();
+    //         $this->error = 'Update failure';
+    //         return false;
+    //     }
+    // }
 
     public function getFirsetPatientByDoctor($doctor)
     {
