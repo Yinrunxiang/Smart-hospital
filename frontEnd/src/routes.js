@@ -1,6 +1,10 @@
 import refresh from "./components/refresh.vue";
 import Login from './components/Account/Login.vue'
 import Home from "./components/Home.vue";
+import user from "./components/content/user/index.vue";
+import userAdd from "./components/content/user/add.vue";
+import department from "./components/content/department/index.vue";
+import departmentAdd from "./components/content/department/add.vue";
 import doctor from "./components/content/doctor/index.vue";
 import doctorAdd from "./components/content/doctor/add.vue";
 import nurse from "./components/content/nurse/index.vue";
@@ -19,6 +23,22 @@ import record from "./components/content/record/index.vue";
 
 const routes = [
   { path: '/', component: Home, name: 'home' },
+  {
+    path: "/home",
+    component: Home,
+    children: [
+      { path: "user", component: user, name: "user" },
+      { path: "user/add", component: userAdd, name: "userAdd" },
+    ]
+  },
+  {
+    path: "/home",
+    component: Home,
+    children: [
+      { path: "department", component: department, name: "department" },
+      { path: "department/add", component: departmentAdd, name: "departmentAdd" },
+    ]
+  },
   {
     path: "/home",
     component: Home,

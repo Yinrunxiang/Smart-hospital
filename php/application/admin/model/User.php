@@ -131,11 +131,11 @@ class User extends Common
             $this->error = 'Illegal operation';
             return false;
         }
-        $checkData = $this->get($id);
-        if (!$checkData) {
-            $this->error = 'This data is not available';
-            return false;
-        }
+        // $checkData = $this->get($id);
+        // if (!$checkData) {
+        //     $this->error = 'This data is not available';
+        //     return false;
+        // }
         if (empty($param['type'])) {
             $this->error = 'Please check the user type';
             return false;

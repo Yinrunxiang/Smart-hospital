@@ -43,6 +43,8 @@ return [
     'admin/department/deletes' => ['admin/department/deletes', ['method' => 'POST']],
     // 【部门】批量启用/禁用
     'admin/department/enables' => ['admin/department/enables', ['method' => 'POST']],
+    // 【部门】更新
+    'admin/department/update' => ['admin/department/update', ['method' => 'POST']],
     // 【病历】获取医生工作病历
     'admin/record/getRecordByDoctor' => ['admin/record/getRecordByDoctor', ['method' => 'POST']],
     // 【病历】获取病人病历
@@ -64,7 +66,9 @@ return [
 	// 【用户】批量删除
 	'admin/user/deletes' => ['admin/users/deletes', ['method' => 'POST']],
 	// 【用户】批量启用/禁用
-	'admin/user/enables' => ['admin/users/enables', ['method' => 'POST']],
+    'admin/user/enables' => ['admin/users/enables', ['method' => 'POST']],
+    // 【用户】更新
+    'admin/user/update' => ['admin/user/update', ['method' => 'POST']],
     // 【医生】批量删除
     'admin/doctor/deletes' => ['admin/doctor/deletes', ['method' => 'POST']],
     // 【医生】批量启用/禁用
@@ -75,10 +79,14 @@ return [
     'admin/nurse/deletes' => ['admin/nurse/deletes', ['method' => 'POST']],
     // 【护士】批量启用/禁用
     'admin/nurse/enables' => ['admin/nurse/enables', ['method' => 'POST']],
+    // 【护士】更新数据
+    'admin/nurse/update' => ['admin/nurse/update', ['method' => 'POST']],
     // 【病人】批量删除
     'admin/patient/deletes' => ['admin/patient/deletes', ['method' => 'POST']],
     // 【病人】批量启用/禁用
     'admin/patient/enables' => ['admin/patient/enables', ['method' => 'POST']],
+    // 【病人】更新数据
+    'admin/patient/update' => ['admin/patient/update', ['method' => 'POST']],
     // 【药物】批量删除
     'admin/medicine/deletes' => ['admin/medicine/deletes', ['method' => 'POST']],
     // 【药物】批量启用/禁用

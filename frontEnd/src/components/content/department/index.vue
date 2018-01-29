@@ -3,9 +3,9 @@
         <div v-show="!setting" class="p-20">
             <div class="m-b-20 ovf-hd">
                 <div class="fl">
-                    <!-- <el-button type="info" class="" @click="addressSetting">
+                    <el-button type="info" class="" @click="addBtn">
                         <i class="el-icon-plus"></i>&nbsp;&nbsp;Add
-                    </el-button> -->
+                    </el-button>
                     <el-button type="warning" class="" @click="deleteBtn">
                         <i class="el-icon-minus"></i>&nbsp;&nbsp;Delete
                     </el-button>
@@ -21,15 +21,7 @@
                 </el-table-column>
                 <el-table-column label="Name" prop="name" width="150">
                 </el-table-column>
-                <el-table-column label="Sex" prop="sex" width="150">
-                </el-table-column>
-                <el-table-column label="Age" prop="age" width="150">
-                </el-table-column>
-                <el-table-column label="Tel" prop="tel"  width="150">
-                </el-table-column>
-                <el-table-column label="Doctor" prop="doctor"  width="150">
-                </el-table-column>
-                <el-table-column label="Nurse" prop="nurse" >
+                <el-table-column label="Address" prop="address">
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
@@ -76,16 +68,17 @@ export default {
   methods: {
     goback(bool) {
       this.setting = bool;
+      this.getAllData()
     },
-    addressSetting() {
+    addBtn() {
       this.add = true;
       this.setting = true;
       var data = {
         name: "",
-        sex: "",
-        age: "",
-        title: "",
-        department:"",
+        password: "",
+        type: "",
+        remark: "",
+        create_time: "",
       };
       this.selectData = data;
     },
@@ -98,30 +91,47 @@ export default {
     selectItem(val) {
       this.multipleSelection = val;
     },
+    //保存状态点击事件
+    setStatusBtn(status) {
+      const data = {
+        params: {
+          selections: this.multipleSelection,
+          status: status
+        }
+      };
+      this.apiGet("device/address.php?action=setStatus", data).then(res => {
+        if (res[0]) {
+          for (var selection of this.multipleSelection) {
+            selection.status = status;
+          }
+          _g.toastMsg("success", res[1]);
+        } else {
+          _g.toastMsg("error", res[1]);
+        }
+      });
+    },
     //删除按钮事件
     deleteBtn() {
-      var vm = this
       this.$confirm("Are you sure to delete the selected data?", "Tips", {
         confirmButtonText: "Yse",
         cancelButtonText: "No",
         type: "warning"
       })
         .then(() => {
-          var ids = []
-          for(var selection of vm.multipleSelection ){
-            ids.push(selection.Id)
+          let ids = []
+          for(let select of this.multipleSelection){
+            ids.push(select.Id)
           }
           const data = {
-            params: {
               ids: ids
-            }
           };
-          this.apiPost("admin/record/deletes", data).then(res => {
-            if (res[0]) {
-              this.getAllData()
-              _g.toastMsg("success", res[1]);
+          var vm = this
+          this.apiPost("admin/department/deletes", data).then(res => {
+            if (res.code == 200) {
+              _g.toastMsg("success", res.data);
+              vm.getAllData()
             } else {
-              _g.toastMsg("error", res[1]);
+              _g.toastMsg("error", res.error);
             }
           });
         })
@@ -137,7 +147,7 @@ export default {
           limit:this.limit
         }
       };
-      this.apiGet("admin/patient", data).then(res => {
+      this.apiGet("admin/department", data).then(res => {
         if (res.code == 200) {
           this.tableData = res.data.list
           this.dataCount = res.data.dataCount
@@ -156,7 +166,7 @@ export default {
     },
   },
   created() {
-    console.log("patient");
+    console.log("user");
     this.init();
   },
   components: {

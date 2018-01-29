@@ -1,6 +1,10 @@
 <template>
   <div>
     <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark" @select="routerChange">
+      <el-menu-item index="user">
+        <i class="el-icon-menu"></i>User</el-menu-item>
+      <el-menu-item index="department">
+        <i class="el-icon-menu"></i>Department</el-menu-item>
       <el-menu-item index="doctor">
         <i class="el-icon-menu"></i>Doctor</el-menu-item>
       <el-menu-item index="nurse">
@@ -37,36 +41,44 @@ export default {
     return {
       menuDatas: [
         {
-          title: 'Doctor',
-          url: '/home/doctor',
-          name: 'doctor'
+          title: "User",
+          url: "/home/user",
+          name: "user"
         },
         {
-          title: 'Nurse',
-          url: '/home/nurse',
-          name: 'nurse'
+          title: "Department",
+          url: "/home/department",
+          name: "department"
         },
         {
-          title: 'Patient',
-          url: '/home/patient',
-          name: 'patient'
+          title: "Doctor",
+          url: "/home/doctor",
+          name: "doctor"
         },
         {
-          title: 'Medicine',
-          url: '/home/medicine',
-          name: 'medicine'
+          title: "Nurse",
+          url: "/home/nurse",
+          name: "nurse"
         },
         {
-          title: 'Record',
-          url: '/home/record',
-          name: 'record'
+          title: "Patient",
+          url: "/home/patient",
+          name: "patient"
         },
-       
-
-      ],
-    }
+        {
+          title: "Medicine",
+          url: "/home/medicine",
+          name: "medicine"
+        },
+        {
+          title: "Record",
+          url: "/home/record",
+          name: "record"
+        }
+      ]
+    };
   },
-  props: ['menuData'],
+  props: ["menuData"],
   methods: {
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
@@ -78,18 +90,16 @@ export default {
       for (var item of this.menuDatas) {
         if (key == item.name) {
           if (item.url != this.$route.path) {
-            router.push(item.url)
+            router.push(item.url);
           } else {
-            _g.shallowRefresh(this.$route.name)
+            _g.shallowRefresh(this.$route.name);
           }
         }
       }
-
     }
   },
   created() {
-    console.log('leftmeun')
-
+    console.log("leftmeun");
   },
   computed: {
     //获取异常设备
@@ -105,9 +115,9 @@ export default {
       //     }
       //   }
       // }
-      var warn = this.$store.state.warn
-      return warn
-    },
-  },
-}
+      var warn = this.$store.state.warn;
+      return warn;
+    }
+  }
+};
 </script>

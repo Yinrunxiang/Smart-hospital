@@ -3,9 +3,9 @@
         <div v-show="!setting" class="p-20">
             <div class="m-b-20 ovf-hd">
                 <div class="fl">
-                    <el-button type="info" class="" @click="addressSetting">
+                    <!-- <el-button type="info" class="" @click="addressSetting">
                         <i class="el-icon-plus"></i>&nbsp;&nbsp;Add
-                    </el-button>
+                    </el-button> -->
                     <el-button type="warning" class="" @click="deleteBtn">
                         <i class="el-icon-minus"></i>&nbsp;&nbsp;Delete
                     </el-button>
@@ -27,7 +27,9 @@
                 </el-table-column>
                 <el-table-column label="Title" prop="title" width="150">
                 </el-table-column>
-                <el-table-column label="Tel" prop="tel" >
+                <el-table-column label="Tel" prop="tel" width="150" >
+                </el-table-column>
+                <el-table-column label="Department" prop="department" >
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
