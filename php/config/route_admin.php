@@ -45,7 +45,7 @@ return [
     'admin/department/enables' => ['admin/department/enables', ['method' => 'POST']],
     // 【部门】更新
     'admin/department/update' => ['admin/department/update', ['method' => 'POST']],
-    // 【病历】获取医生工作病历
+    // 【病历】获取医生病历
     'admin/record/getRecordByDoctor' => ['admin/record/getRecordByDoctor', ['method' => 'POST']],
     // 【病历】获取病人病历
     'admin/record/getRecordByPatient' => ['admin/record/getRecordByPatient', ['method' => 'POST']],

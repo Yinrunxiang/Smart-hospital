@@ -17,10 +17,10 @@
             <el-form-item label="age">
                 <el-input v-model.trim="selectData.age" class="h-40 w-200"></el-input>
             </el-form-item>
-            <el-form-item label="title">
+            <!-- <el-form-item label="title">
                 <el-input v-model.trim="selectData.title" class="h-40 w-200"></el-input>
-            </el-form-item>
-            <el-form-item label="Doctor">
+            </el-form-item> -->
+            <!-- <el-form-item label="Doctor">
                 <el-select class="w-200"  v-model="selectData.doctor" placeholder="">
                         <el-option
                           v-for="item in doctorList"
@@ -39,7 +39,7 @@
                           :value="item.name">
                         </el-option>
                       </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" @click="addData()" :loading="isLoading">Save</el-button>
                 <el-button @click="goback()">Cancel</el-button>
@@ -65,8 +65,8 @@ export default {
           label:'women'
         }
       ],
-      doctorList:[],
-      nurseList:[],
+      // doctorList:[],
+      // nurseList:[],
       isLoading: false,
     };
   },
@@ -105,35 +105,35 @@ export default {
   },
   props: ["add", "selectData"],
   created() {
-    let vm = this;
-    const doctorData = {
-      params: {}
-    };
-    this.apiGet("admin/doctor", doctorData).then(res => {
-      if (res.code == 200) {
-        for (let doctor of res.data.list) {
-          let obj = {
-            Id: doctor.Id,
-            name: doctor.name,
-          };
-          vm.doctorList.push(obj);
-        }
-      }
-    });
-    const nurseData = {
-      params: {}
-    };
-    this.apiGet("admin/nurse", nurseData).then(res => {
-      if (res.code == 200) {
-        for (let nurse of res.data.list) {
-          let obj = {
-            Id: nurse.Id,
-            name: nurse.name,
-          };
-          vm.nurseList.push(obj);
-        }
-      }
-    });
+    // let vm = this;
+    // const doctorData = {
+    //   params: {}
+    // };
+    // this.apiGet("admin/doctor", doctorData).then(res => {
+    //   if (res.code == 200) {
+    //     for (let doctor of res.data.list) {
+    //       let obj = {
+    //         Id: doctor.Id,
+    //         name: doctor.name,
+    //       };
+    //       vm.doctorList.push(obj);
+    //     }
+    //   }
+    // });
+    // const nurseData = {
+    //   params: {}
+    // };
+    // this.apiGet("admin/nurse", nurseData).then(res => {
+    //   if (res.code == 200) {
+    //     for (let nurse of res.data.list) {
+    //       let obj = {
+    //         Id: nurse.Id,
+    //         name: nurse.name,
+    //       };
+    //       vm.nurseList.push(obj);
+    //     }
+    //   }
+    // });
   },
   mounted() {
   },
