@@ -3,6 +3,9 @@
         <div v-show="!setting" class="p-20">
             <div class="m-b-20 ovf-hd">
                 <div class="fl">
+                    <el-button type="info" class="" @click="addBtn">
+                        <i class="el-icon-plus"></i>&nbsp;&nbsp;Add
+                    </el-button>
                     <el-button type="warning" class="" @click="deleteBtn">
                         <i class="el-icon-minus"></i>&nbsp;&nbsp;Delete
                     </el-button>
@@ -16,19 +19,13 @@
             <el-table :data="tableData" style="width: 100%" @selection-change="selectItem" @row-dblclick="rowDblclick">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
-                <el-table-column label="Doctor" prop="doctor_name" width="150">
+                <el-table-column label="Name" prop="name" width="150">
                 </el-table-column>
-                <el-table-column label="Patient" prop="patient_name" width="150">
+                <el-table-column label="Type" prop="type" width="150">
                 </el-table-column>
-                <el-table-column label="Disease" prop="disease" width="150">
+                <el-table-column label="Effect" prop="effect" width="150">
                 </el-table-column>
-                <el-table-column label="Medicine" prop="medicine" width="150">
-                </el-table-column>
-                <el-table-column label="Create Time" prop="create_time" width="200" >
-                </el-table-column>
-                <el-table-column label="Begin Time" prop="begin_time" width="200" >
-                </el-table-column>
-                <el-table-column label="End Time" prop="end_time" width="200" >
+                <el-table-column label="Comment" prop="comment">
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
@@ -43,12 +40,16 @@
                 </div>
             </div>
         </div>
+        <div v-if="setting">
+            <add :add="add" :selectData="selectData" @goback="goback"></add>
+        </div>
     </div>
 </template>
 
 <script>
 import http from "../../../assets/js/http";
 import list from "../../../assets/js/list";
+import add from "./add";
 export default {
   //  currentPage        页码
   //  keywords           关键字
@@ -57,7 +58,7 @@ export default {
   data() {
     return {
       tableData: [],
-      selectData: {},
+      selectData:{},
       dataCount: null,
       currentPage: null,
       keywords: "",
@@ -71,18 +72,17 @@ export default {
   methods: {
     goback(bool) {
       this.setting = bool;
+      this.getAllData()
     },
-    addressSetting() {
+    addBtn() {
       this.add = true;
       this.setting = true;
       var data = {
-        doctor: "",
-        patient: "",
-        disease: "",
-        medicine: "",
-        create_time: "",
-        begin_time: "",
-        end_time: ""
+        name: "",
+        type: "",
+        effect: "",
+        title: "",
+        comment: "",
       };
       this.selectData = data;
     },
@@ -94,6 +94,25 @@ export default {
     //获取被选中的数据
     selectItem(val) {
       this.multipleSelection = val;
+    },
+    //保存状态点击事件
+    setStatusBtn(status) {
+      const data = {
+        params: {
+          selections: this.multipleSelection,
+          status: status
+        }
+      };
+      this.apiGet("device/address.php?action=setStatus", data).then(res => {
+        if (res[0]) {
+          for (var selection of this.multipleSelection) {
+            selection.status = status;
+          }
+          _g.toastMsg("success", res[1]);
+        } else {
+          _g.toastMsg("error", res[1]);
+        }
+      });
     },
     //删除按钮事件
     deleteBtn() {
@@ -111,7 +130,7 @@ export default {
               ids: ids
           };
           var vm = this
-          this.apiPost("admin/record/deletes", data).then(res => {
+          this.apiPost("admin/disease/deletes", data).then(res => {
             if (res.code == 200) {
               _g.toastMsg("success", res.data);
               vm.getAllData()
@@ -126,14 +145,16 @@ export default {
     },
     getAllData() {
       const data = {
-          doctor: this.treatData.user_id,
-          page: this.currentPage,
-          limit: this.limit
+        params: {
+          keywords: this.keywords,
+          page:this.currentPage,
+          limit:this.limit
+        }
       };
-      this.apiPost("admin/record/getRecordByDoctor", data).then(res => {
+      this.apiGet("admin/disease", data).then(res => {
         if (res.code == 200) {
-          this.tableData = res.data.list;
-          this.dataCount = res.data.dataCount;
+          this.tableData = res.data.list
+          this.dataCount = res.data.dataCount
           // this.$store.dispatch("setAddress", address);
           // _g.toastMsg("success", res[1]);
         } else {
@@ -146,17 +167,16 @@ export default {
       this.getKeywords();
       this.getCurrentPage();
       this.getAllData();
-    }
+    },
   },
   created() {
-    console.log("treat");
+    console.log("disease");
     this.init();
   },
   components: {
- 
+    add
   },
   computed: {},
-  props: ["treatData"],
   watch: {
     $route(to, from) {
       this.init();

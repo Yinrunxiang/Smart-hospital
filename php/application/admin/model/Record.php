@@ -44,7 +44,10 @@ class Record extends Common
             ->where($map)
             ->alias('record')
             ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
-            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT');
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->join('user nurse', 'record.doctor=nurse.user_id', 'LEFT')
+            ->join('disease disease', 'record.disease=disease.Id', 'LEFT')
+            ->join('medicine medicine', 'record.medicine=medicine.Id', 'LEFT');
 
         // 若有分页
         if ($page && $limit) {
@@ -52,7 +55,7 @@ class Record extends Common
         }
 
         $list = $list
-            ->field('record.*,patient.name as patient_name,doctor.name as doctor_name')
+            ->field('record.*,patient.name as patient_name,doctor.name as doctor_name,nurse.name as nurse_name,disease.name as disease_name,medicine.name as medicine_name')
             ->select();
 
         $data['list'] = $list;
@@ -97,10 +100,13 @@ class Record extends Common
             ->where($map)
             ->alias('record')
             ->join('user patient', 'record.patient=patient.user_id', 'LEFT')
-            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT');
+            ->join('user doctor', 'record.doctor=doctor.user_id', 'LEFT')
+            ->join('user nurse', 'record.doctor=nurse.user_id', 'LEFT')
+            ->join('disease disease', 'record.disease=disease.Id', 'LEFT')
+            ->join('medicine medicine', 'record.medicine=medicine.Id', 'LEFT');
 
         $list = $list
-            ->field('record.*,patient.name as patient_name,doctor.name as doctor_name')
+            ->field('record.*,patient.name as patient_name,doctor.name as doctor_name,nurse.name as nurse_name,disease.name as disease_name,medicine.name as medicine_name')
             ->select();
 
         $data['list'] = $list;

@@ -62,7 +62,7 @@
 import http from "../../../assets/js/http";
 import list from "../../../assets/js/list";
 import add from "./add";
-import treat from "./treat";
+import treat from "./treat/index";
 
 export default {
   //  currentPage        页码

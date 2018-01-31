@@ -3,9 +3,9 @@
         <div v-show="!setting" class="p-20">
             <div class="m-b-20 ovf-hd">
                 <div class="fl">
-                  <el-button type="info" class="" @click="addBtn">
+                  <!-- <el-button type="info" class="" @click="addBtn">
                         <i class="el-icon-plus"></i>&nbsp;&nbsp;Add
-                    </el-button>
+                    </el-button> -->
                     <el-button type="warning" class="" @click="deleteBtn">
                         <i class="el-icon-minus"></i>&nbsp;&nbsp;Delete
                     </el-button>
@@ -16,7 +16,7 @@
                     </el-input>
                 </div>
             </div>
-            <el-table :data="tableData" style="width: 100%" @selection-change="selectItem" @row-dblclick="rowDblclick">
+            <el-table :data="tableData" style="width: 100%" @selection-change="selectItem" >
                 <el-table-column type="selection" width="50">
                 </el-table-column>
                 <el-table-column label="Patient" prop="patient_name" width="150">
@@ -33,7 +33,12 @@
                 </el-table-column>
                 <el-table-column label="Begin Time" prop="begin_time" width="200" >
                 </el-table-column>
-                <el-table-column label="End Time" prop="end_time" width="200" >
+                <el-table-column label="End Time" prop="end_time" width="200">
+                </el-table-column>
+                <el-table-column  width="80"  fixed="right">
+                  <template scope="scope">
+                    <el-button type="primary" size="small" @click="treat(scope.row)">Treat</el-button>
+                  </template>
                 </el-table-column>
             </el-table>
             <div class="pos-rel p-t-20">
@@ -82,12 +87,17 @@ export default {
       this.setting = bool;
       this.init()
     },
+    treat(data){
+      this.add = false;
+      this.setting = true;
+      this.selectData = data;
+    },
     addBtn() {
       this.add = true;
       this.setting = true;
       var data = {
         name:this.treatData.name,
-        patient: this.treatData.user_id,
+        Doctor: this.treatData.user_id,
         doctor: "",
         nurse:"",
         disease: "",
@@ -98,11 +108,11 @@ export default {
       };
       this.selectData = data;
     },
-    rowDblclick(row) {
-      this.add = false;
-      this.setting = true;
-      this.selectData = row;
-    },
+    // rowDblclick(row) {
+    //   this.add = false;
+    //   this.setting = true;
+    //   this.selectData = row;
+    // },
     //获取被选中的数据
     selectItem(val) {
       this.multipleSelection = val;
@@ -138,11 +148,11 @@ export default {
     },
     getAllData() {
       const data = {
-          patient: this.treatData.user_id,
+          doctor: this.treatData.user_id,
           page: this.currentPage,
           limit: this.limit
       };
-      this.apiPost("admin/record/getRecordByPatient", data).then(res => {
+      this.apiPost("admin/record/getRecordByDoctor", data).then(res => {
         if (res.code == 200) {
           this.tableData = res.data.list;
           this.dataCount = res.data.dataCount;

@@ -13,6 +13,8 @@ import patient from "./components/content/patient/index.vue";
 import patientAdd from "./components/content/patient/add.vue";
 import medicine from "./components/content/medicine/index.vue";
 import medicineAdd from "./components/content/medicine/add.vue";
+import disease from "./components/content/disease/index.vue";
+import diseaseAdd from "./components/content/disease/add.vue";
 import record from "./components/content/record/index.vue";
 /**
  * meta参数解析
@@ -76,6 +78,14 @@ const routes = [
     children: [
       { path: "medicine", component: medicine, name: "medicine" },
       { path: "medicine/add", component: medicineAdd, name: "medicineAdd" },
+    ]
+  },
+  {
+    path: "/home",
+    component: Home,
+    children: [
+      { path: "disease", component: disease, name: "disease" },
+      { path: "disease/add", component: diseaseAdd, name: "diseaseAdd" },
     ]
   },
   {

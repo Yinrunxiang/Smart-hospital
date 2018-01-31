@@ -19,9 +19,11 @@
             <el-table :data="tableData" style="width: 100%" @selection-change="selectItem" @row-dblclick="rowDblclick">
                 <el-table-column type="selection" width="50">
                 </el-table-column>
+                <el-table-column label="Patient" prop="patient_name" width="150">
+                </el-table-column>
                 <el-table-column label="Doctor" prop="doctor_name" width="150">
                 </el-table-column>
-                <el-table-column label="Patient" prop="patient_name" width="150">
+                <el-table-column label="Nurse" prop="nurse_name" width="150">
                 </el-table-column>
                 <el-table-column label="Disease" prop="disease" width="150">
                 </el-table-column>

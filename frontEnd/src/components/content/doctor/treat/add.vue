@@ -1,8 +1,8 @@
 <template>
     <div class="m-l-50 m-t-30 w-500">
         <el-form ref="form" :model="selectData" label-width="150px">
-            <el-form-item label="Patient">
-                <el-input :disabled = "true" v-model.trim="selectData.patient" class="h-40 w-200"></el-input>
+            <el-form-item label="doctor">
+                <el-input :disabled = "true" v-model.trim="selectData.doctor" class="h-40 w-200"></el-input>
             </el-form-item>
             <el-form-item label="Doctor">
                 <el-select class="w-200"  v-model="selectData.doctor" placeholder="">
@@ -100,7 +100,7 @@ export default {
     }
   },
   created() {
-    console.log("patientTreatAdd");
+    console.log("doctorTreatAdd");
     let vm = this;
     const doctorData = {
       params: {}

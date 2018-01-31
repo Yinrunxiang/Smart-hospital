@@ -10,6 +10,7 @@ return [
     '__rest__'=>[
         'admin/department'		   =>'admin/department',
         'admin/medicine'		   =>'admin/medicine',
+        'admin/disease'		   =>'admin/disease',
         'admin/record'		   =>'admin/record',
         'admin/user'		   =>'admin/user',
         'admin/doctor'		   =>'admin/doctor',
@@ -93,6 +94,12 @@ return [
     'admin/medicine/enables' => ['admin/medicine/enables', ['method' => 'POST']],
     // 【药物】更新数据
     'admin/medicine/update' => ['admin/medicine/update', ['method' => 'POST']],
+    // 【疾病】批量删除
+    'admin/disease/deletes' => ['admin/disease/deletes', ['method' => 'POST']],
+    // 【疾病】批量启用/禁用
+    'admin/disease/enables' => ['admin/disease/enables', ['method' => 'POST']],
+    // 【疾病】更新数据
+    'admin/disease/update' => ['admin/disease/update', ['method' => 'POST']],
 	
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',

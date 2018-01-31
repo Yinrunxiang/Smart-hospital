@@ -14,7 +14,9 @@
         <i class="el-icon-menu"></i>Patient</el-menu-item>
       <el-menu-item index="medicine">
         <i class="el-icon-menu"></i>Medicine</el-menu-item>
-        <el-menu-item index="record">
+      <el-menu-item index="disease">
+        <i class="el-icon-menu"></i>Disease</el-menu-item>
+      <el-menu-item index="record">
         <i class="el-icon-menu"></i>Record</el-menu-item>
     </el-menu>
   </div>
@@ -69,6 +71,11 @@ export default {
           title: "Medicine",
           url: "/home/medicine",
           name: "medicine"
+        },
+        {
+          title: "Disease",
+          url: "/home/disease",
+          name: "disease"
         },
         {
           title: "Record",
